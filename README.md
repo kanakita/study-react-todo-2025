@@ -1,12 +1,31 @@
-# React + Vite
+# TODO アプリを作成する
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 機能要件
+- [ ] ブラウザで動く
+- [ ] データは、localStorageに保存
+- [ ] TODOの追加、削除、編集ができる
+- [ ] TODOは完了/未完了の状態を持つ
+- [ ] TODOのフィルタリングができる (未完了/完了)
+- [ ] TODO には優先度が設定可能。(高/中/低)
+- [ ] TODOの並び替えができる (作成日/優先度)
 
-Currently, two official plugins are available:
+## 技術スタック
+- React
+- tailwindcss
+- eslint
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Optional
+    - storybook
+    - React Hooks
+    - prettier
 
-## Expanding the ESLint configuration
+## ディレクトリ
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- package.json
+- src/app
+  - components
+    - ComponentName/
+      - ComponentName.jsx
+  - App.tsx
+
+そのほか必要なモノがあれば。
