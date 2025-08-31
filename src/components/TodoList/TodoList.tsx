@@ -3,6 +3,7 @@ import { useState } from 'react';
 export interface TodoListProps {
   items: TodoItemProps[];
   onClickDelete: (id: string) => void;
+  onClickChange: (id: string, isCompleted: boolean) => void;
 }
 
 const PriorityMap = {
@@ -20,7 +21,7 @@ export interface TodoItemProps {
   id: string;
 }
 
-export default function TodoList({ items = [], onClickDelete }: TodoListProps) {
+export default function TodoList({ items = [], onClickDelete, onClickChange }: TodoListProps) {
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
@@ -53,6 +54,7 @@ export default function TodoList({ items = [], onClickDelete }: TodoListProps) {
                   id={id}
                   key={id}
                   onClickDelete={onClickDelete}
+                  onClickChange={onClickChange}
                 />
               ))
             : null}
@@ -64,15 +66,34 @@ export default function TodoList({ items = [], onClickDelete }: TodoListProps) {
 
 interface TodoItemActionProps {
   onClickDelete: (id: string) => void;
+  onClickChange: (id: string, isCompleted: boolean) => void;
 }
 
 type TodoItemAction = TodoItemActionProps & TodoItemProps;
 
-export function TodoItem({ completed, id, title, priority, onClickDelete }: TodoItemAction) {
+export function TodoItem({
+  completed,
+  id,
+  title,
+  priority,
+  onClickDelete,
+  onClickChange,
+}: TodoItemAction) {
   const [isCompleted, setIsCompleted] = useState(completed);
 
   function handleDelete() {
     onClickDelete(id);
+  }
+
+  function handleChange() {
+    // 新しい値を計算する
+    const newValue = !isCompleted;
+
+    // 新しい値でisCompletedを更新する
+    setIsCompleted(newValue);
+
+    // 新しい値を渡す
+    onClickChange(id, newValue);
   }
 
   return (
@@ -84,7 +105,9 @@ export function TodoItem({ completed, id, title, priority, onClickDelete }: Todo
             type="checkbox"
             className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500  focus:ring-2"
             checked={isCompleted}
-            onChange={() => setIsCompleted(!isCompleted)}
+            onChange={() => {
+              handleChange();
+            }}
           />
           <label htmlFor="checkbox-table-search-1" className="sr-only">
             checkbox

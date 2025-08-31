@@ -29,12 +29,26 @@ function App() {
     setTodos(newTodo);
   }
 
+  function changeStatus(id: string, isCompleted: boolean) {
+    const newTodos = todos.map((todo) => {
+      if (id === todo.id) {
+        return {
+          ...todo,
+          completed: isCompleted,
+        };
+      }
+      return todo;
+    });
+
+    setTodos(newTodos);
+  }
+
   return (
     <>
       <div className="container mx-auto">
         <Header />
         <TodoForm onSubmit={addTodo} />
-        <TodoList items={todos} onClickDelete={deleteTodo} />
+        <TodoList items={todos} onClickDelete={deleteTodo} onClickChange={changeStatus} />
       </div>
     </>
   );
