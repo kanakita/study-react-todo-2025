@@ -2,26 +2,24 @@ import './App.css';
 import TodoList, { TodoItemProps } from '@/components/TodoList/TodoList';
 import TodoForm from '@/components/TodoForm/TodoForm';
 import Header from '@/components/Header/Header';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function App() {
-  const initialTodoList: TodoItemProps[] = [
-    {
-      completed: false,
-      title: 'A',
-      priority: 1,
-      id: 'fghjik',
-    },
-  ];
+  const storageData = localStorage.getItem('todos');
+  const initialTodoList: TodoItemProps[] = storageData ? JSON.parse(storageData) : [];
 
   const [todos, setTodos] = useState(initialTodoList);
+
+  // todosが変更されるたびにlocalStorageに保存
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
 
   function addTodo(todo: Omit<TodoItemProps, 'id'>) {
     const newTodo = {
       ...todo,
       id: crypto.randomUUID(),
     };
-    console.log(newTodo);
 
     setTodos([...todos, newTodo]);
   }
