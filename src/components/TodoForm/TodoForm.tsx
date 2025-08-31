@@ -1,14 +1,18 @@
-import { TodoItemProps } from '@/components/TodoList/TodoList';
+import { PriorityItem, TodoItemProps } from '@/components/TodoList/TodoList';
+import { ChangeEvent, useState } from 'react';
 
 export interface SubmitProps {
   onSubmit: (todo: Omit<TodoItemProps, 'id'>) => void;
 }
 export default function TodoForm({ onSubmit }: SubmitProps) {
+  const [text, setText] = useState('');
+  const [select, setSelect] = useState(2);
+
   function handleOnSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const title = formData.get('title') as string;
-    const priority = formData.get('priority');
+    const priority = formData.get('priority') as string;
 
     if (!title) {
       return;
@@ -17,9 +21,15 @@ export default function TodoForm({ onSubmit }: SubmitProps) {
     const todo = {
       completed: false,
       title: title,
-      priority: Number(priority),
+      priority: Number(priority) as PriorityItem,
     };
     onSubmit(todo);
+
+    // inputの値を空にする
+    setText('');
+
+    // selectの値を空にする
+    setSelect(2);
   }
 
   return (
@@ -33,6 +43,10 @@ export default function TodoForm({ onSubmit }: SubmitProps) {
           name="title"
           id="title"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          value={text}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            setText(event.target.value);
+          }}
         />
       </div>
       <div className="w-20">
@@ -45,7 +59,10 @@ export default function TodoForm({ onSubmit }: SubmitProps) {
         <select
           id="priority"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-          defaultValue="2"
+          value={select}
+          onChange={(event: ChangeEvent<HTMLSelectElement>) => {
+            setSelect(Number(event.target.value));
+          }}
           name="priority"
         >
           <option value="1">高</option>

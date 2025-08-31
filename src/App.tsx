@@ -26,12 +26,17 @@ function App() {
     setTodos([...todos, newTodo]);
   }
 
+  function deleteTodo(id: string) {
+    const newTodo = todos.filter((todo) => todo.id !== id);
+    setTodos(newTodo);
+  }
+
   return (
     <>
       <div className="container mx-auto">
         <Header />
         <TodoForm onSubmit={addTodo} />
-        <TodoList items={todos} />
+        <TodoList items={todos} onClickDelete={deleteTodo} />
       </div>
     </>
   );

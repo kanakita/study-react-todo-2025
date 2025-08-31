@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 export interface TodoListProps {
   items: TodoItemProps[];
+  onClickDelete: (id: string) => void;
 }
 
 const PriorityMap = {
@@ -19,7 +20,7 @@ export interface TodoItemProps {
   id: string;
 }
 
-export default function TodoList({ items = [] }: TodoListProps) {
+export default function TodoList({ items = [], onClickDelete }: TodoListProps) {
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
@@ -51,6 +52,7 @@ export default function TodoList({ items = [] }: TodoListProps) {
                   priority={priority}
                   id={id}
                   key={id}
+                  onClickDelete={onClickDelete}
                 />
               ))
             : null}
@@ -60,8 +62,19 @@ export default function TodoList({ items = [] }: TodoListProps) {
   );
 }
 
-export function TodoItem({ completed, id, title, priority }: TodoItemProps) {
+interface TodoItemActionProps {
+  onClickDelete: (id: string) => void;
+}
+
+type TodoItemAction = TodoItemActionProps & TodoItemProps;
+
+export function TodoItem({ completed, id, title, priority, onClickDelete }: TodoItemAction) {
   const [isCompleted, setIsCompleted] = useState(completed);
+
+  function handleDelete() {
+    onClickDelete(id);
+  }
+
   return (
     <tr className="bg-white border-b border-gray-200 hover:bg-gray-50">
       <td className="w-4 p-4">
@@ -91,7 +104,7 @@ export function TodoItem({ completed, id, title, priority }: TodoItemProps) {
         </button>
       </td>
       <td className="px-6 py-4">
-        <button className="font-medium text-red-600" type="button">
+        <button onClick={handleDelete} className="font-medium text-red-600" type="button">
           Remove
         </button>
       </td>
