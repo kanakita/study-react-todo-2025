@@ -21,11 +21,7 @@ function App() {
     // localStorageに保存
     localStorage.setItem('todos', JSON.stringify(todos));
 
-    // フィルターの値でfilterTodosを更新する
-    filterTodos(currentFilter);
-
-    // ソートの値でsortTodosを更新する
-    sortTodos(currentSort);
+    applyFilterAndSort();
   }, [todos, currentFilter, currentSort]);
 
   function addTodo(todo: Omit<TodoItemProps, 'id' | 'date'>) {
@@ -58,8 +54,9 @@ function App() {
     setTodos(newTodos);
   }
 
-  function filterTodos(filter: string) {
-    const filteredTodos = todos.filter((todo) => {
+  // todoをフィルター条件でフィルタリングして値を返す
+  function getFilteredTodos(filter: string) {
+    return todos.filter((todo) => {
       if (filter === 'all') {
         return true;
       }
@@ -71,13 +68,15 @@ function App() {
       }
       return false;
     });
-    // console.log(filteredTodos);
-    setCurrentFilter(filter);
-    setFilteredTodos(filteredTodos);
   }
 
-  function sortTodos(sort: string) {
-    const sortedTodos = [...filteredTodos].sort((a, b) => {
+  function filterTodos(filter: string) {
+    setCurrentFilter(filter); // 状態だけ更新する
+  }
+
+  // 渡された配列をソート条件でソートして値を返す
+  function getSortedTodos(todoArray: TodoItemProps[], sort: string) {
+    return [...todoArray].sort((a, b) => {
       if (sort === 'priority-high') {
         return a.priority - b.priority; // 1,2,3順 = 高→低
       }
@@ -92,8 +91,22 @@ function App() {
       }
       return 0;
     });
-    setCurrentSort(sort);
-    setFilteredTodos(sortedTodos);
+  }
+
+  function sortTodos(sort: string) {
+    setCurrentSort(sort); // 状態だけ更新する
+  }
+
+  // 現在のフィルター・ソート設定でtodosを処理し、filteredTodosを更新する
+  function applyFilterAndSort() {
+    // フィルタリングを実行（フィルタリングされた値が返ってくる）
+    const filtered = getFilteredTodos(currentFilter);
+
+    // フィルタリングされた値を元にソートを実行
+    const sorted = getSortedTodos(filtered, currentSort);
+
+    // 最終結果をfilteredTodosに設定
+    setFilteredTodos(sorted);
   }
 
   return (
