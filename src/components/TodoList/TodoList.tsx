@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import Edit from './assets/edit.svg?react';
+import Trash from './assets/trash.svg?react';
 
 export interface TodoListProps {
   items: TodoItemProps[];
@@ -122,13 +124,17 @@ export function TodoItem({
       </th>
       <td className="px-6 py-4">{PriorityMap[priority]}</td>
       <td className="px-6 py-4">
-        <button className="font-medium text-blue-600" type="button">
-          Edit
+        <button className="font-medium text-blue-600 cursor-pointer" type="button">
+          <Edit width={18} height={18} />
         </button>
       </td>
       <td className="px-6 py-4">
-        <button onClick={handleDelete} className="font-medium text-red-600" type="button">
-          Remove
+        <button
+          onClick={handleDelete}
+          className="font-medium text-red-600 cursor-pointer"
+          type="button"
+        >
+          <Trash width={18} height={18} />
         </button>
       </td>
     </tr>
