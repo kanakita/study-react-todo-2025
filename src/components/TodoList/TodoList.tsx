@@ -21,6 +21,7 @@ export interface TodoItemProps {
   title: string;
   priority: PriorityItem;
   id: string;
+  date: string;
 }
 
 export default function TodoList({ items = [], onClickDelete, onClickChange }: TodoListProps) {
@@ -71,7 +72,7 @@ interface TodoItemActionProps {
   onClickChange: (id: string, isCompleted: boolean) => void;
 }
 
-type TodoItemAction = TodoItemActionProps & TodoItemProps;
+type TodoItemAction = TodoItemActionProps & Omit<TodoItemProps, 'date'>;
 
 export function TodoItem({
   completed,

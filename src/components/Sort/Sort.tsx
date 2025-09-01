@@ -1,31 +1,24 @@
 import { useState } from 'react';
 
-interface FilterProps {
-  onFilterChange: (value: string) => void;
+interface SortProps {
+  onSortChange: (value: string) => void;
 }
 
-export default function Filter({ onFilterChange }: FilterProps) {
+export default function Sort({ onSortChange }: SortProps) {
   const items = [
-    {
-      status: 'all',
-      title: 'すべて',
-    },
-    {
-      status: 'completed',
-      title: '完了のみ',
-    },
-    {
-      status: 'active',
-      title: '未完了のみ',
-    },
+    { value: 'default', label: '登録順' }, // デフォルト
+    { value: 'priority-high', label: '優先度（高→低）' },
+    { value: 'priority-low', label: '優先度（低→高）' },
+    { value: 'created-new', label: '作成日（新→古）' },
+    { value: 'created-old', label: '作成日（古→新）' },
   ];
 
-  const [selected, setSelected] = useState('all');
+  const [selected, setSelected] = useState('default');
 
   function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
     setSelected(event.target.value);
 
-    onFilterChange(event.target.value);
+    onSortChange(event.target.value);
   }
 
   return (
@@ -37,23 +30,23 @@ export default function Filter({ onFilterChange }: FilterProps) {
               ? `w-full`
               : `w-full border-b border-gray-200 sm:border-b-0 sm:border-r`
           }
-          key={item.status}
+          key={item.value}
         >
           <div className="flex items-center ps-3">
             <input
-              id={`filter-complete-${item.status}`}
+              id={`sort-${item.value}`}
               type="radio"
-              value={item.status}
-              name="filter-complete"
+              value={item.value}
+              name="sort"
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
               onChange={handleOnChange}
-              checked={selected === item.status}
+              checked={selected === item.value}
             />
             <label
-              htmlFor={`filter-complete-${item.status}`}
+              htmlFor={`sort-${item.value}`}
               className="w-full py-3 ms-2 text-sm font-medium text-gray-900"
             >
-              {item.title}
+              {item.label}
             </label>
           </div>
         </li>

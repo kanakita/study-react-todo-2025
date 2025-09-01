@@ -2,7 +2,7 @@ import { PriorityItem, TodoItemProps } from '@/components/TodoList/TodoList';
 import { ChangeEvent, useState } from 'react';
 
 export interface SubmitProps {
-  onSubmit: (todo: Omit<TodoItemProps, 'id'>) => void;
+  onSubmit: (todo: Omit<TodoItemProps, 'id' | 'date'>) => void;
 }
 export default function TodoForm({ onSubmit }: SubmitProps) {
   const [text, setText] = useState('');
