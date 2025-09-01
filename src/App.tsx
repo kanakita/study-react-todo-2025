@@ -78,9 +78,14 @@ function App() {
       if (sort === 'priority-low') {
         return b.priority - a.priority; // 3,2,1順 = 低→高
       }
+      if (sort === 'created-new') {
+        return b.date.localeCompare(a.date);
+      }
+      if (sort === 'created-old') {
+        return a.date.localeCompare(b.date);
+      }
       return 0;
     });
-    console.log(sortedTodos);
     setFilteredTodos(sortedTodos);
   }
 
