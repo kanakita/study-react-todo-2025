@@ -10,6 +10,8 @@ function App() {
   const initialTodoList: TodoItemProps[] = storageData ? JSON.parse(storageData) : [];
 
   const [todos, setTodos] = useState(initialTodoList);
+  const [filteredTodos, setFilteredTodos] = useState(todos);
+  console.log(filteredTodos);
 
   // todosが変更されるたびにlocalStorageに保存
   useEffect(() => {
@@ -44,8 +46,21 @@ function App() {
     setTodos(newTodos);
   }
 
-  function filterStatus(filter: string) {
-    console.log(filter);
+  function filterTodos(filter: string) {
+    const filteredTodos = todos.filter((todo) => {
+      if (filter === 'all') {
+        return true;
+      }
+      if (filter === 'completed') {
+        return todo.completed;
+      }
+      if (filter === 'active') {
+        return !todo.completed;
+      }
+      return false;
+    });
+    // console.log(filteredTodos);
+    setFilteredTodos(filteredTodos);
   }
 
   return (
@@ -53,8 +68,8 @@ function App() {
       <div className="container mx-auto">
         <Header />
         <TodoForm onSubmit={addTodo} />
-        <Filter onFilterChange={filterStatus} />
-        <TodoList items={todos} onClickDelete={deleteTodo} onClickChange={changeStatus} />
+        <Filter onFilterChange={filterTodos} />
+        <TodoList items={filteredTodos} onClickDelete={deleteTodo} onClickChange={changeStatus} />
       </div>
     </>
   );
