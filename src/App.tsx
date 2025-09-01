@@ -11,11 +11,14 @@ function App() {
 
   const [todos, setTodos] = useState(initialTodoList);
   const [filteredTodos, setFilteredTodos] = useState(todos);
+  const [currentFilter, setCurrentFilter] = useState('all');
   console.log(filteredTodos);
 
   // todosが変更されるたびにlocalStorageに保存
   useEffect(() => {
     localStorage.setItem('todos', JSON.stringify(todos));
+    // setFilteredTodos(todos);
+    filterTodos(currentFilter);
   }, [todos]);
 
   function addTodo(todo: Omit<TodoItemProps, 'id'>) {
@@ -60,6 +63,7 @@ function App() {
       return false;
     });
     // console.log(filteredTodos);
+    setCurrentFilter(filter);
     setFilteredTodos(filteredTodos);
   }
 
