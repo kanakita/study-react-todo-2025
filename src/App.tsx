@@ -13,14 +13,20 @@ function App() {
   const [todos, setTodos] = useState(initialTodoList);
   const [filteredTodos, setFilteredTodos] = useState(todos);
   const [currentFilter, setCurrentFilter] = useState('all');
+  const [currentSort, setCurrentSort] = useState('default');
   // console.log(filteredTodos);
 
-  // todosが変更されるたびにlocalStorageに保存
+  // todosが変更されるたびに実行される
   useEffect(() => {
+    // localStorageに保存
     localStorage.setItem('todos', JSON.stringify(todos));
-    // setFilteredTodos(todos);
+
+    // フィルターの値でfilterTodosを更新する
     filterTodos(currentFilter);
-  }, [todos]);
+
+    // ソートの値でsortTodosを更新する
+    sortTodos(currentSort);
+  }, [todos, currentFilter, currentSort]);
 
   function addTodo(todo: Omit<TodoItemProps, 'id' | 'date'>) {
     const newTodo = {
@@ -71,7 +77,7 @@ function App() {
   }
 
   function sortTodos(sort: string) {
-    const sortedTodos = [...todos].sort((a, b) => {
+    const sortedTodos = [...filteredTodos].sort((a, b) => {
       if (sort === 'priority-high') {
         return a.priority - b.priority; // 1,2,3順 = 高→低
       }
@@ -86,6 +92,7 @@ function App() {
       }
       return 0;
     });
+    setCurrentSort(sort);
     setFilteredTodos(sortedTodos);
   }
 
