@@ -3,6 +3,7 @@ import TodoList, { TodoItemProps } from '@/components/TodoList/TodoList';
 import TodoForm from '@/components/TodoForm/TodoForm';
 import Header from '@/components/Header/Header';
 import { useEffect, useState } from 'react';
+import Filter from '@/components/Filter/Filter';
 
 function App() {
   const storageData = localStorage.getItem('todos');
@@ -43,11 +44,16 @@ function App() {
     setTodos(newTodos);
   }
 
+  function filterStatus(filter: string) {
+    console.log(filter);
+  }
+
   return (
     <>
       <div className="container mx-auto">
         <Header />
         <TodoForm onSubmit={addTodo} />
+        <Filter onFilterChange={filterStatus} />
         <TodoList items={todos} onClickDelete={deleteTodo} onClickChange={changeStatus} />
       </div>
     </>
