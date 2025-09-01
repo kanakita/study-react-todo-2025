@@ -86,9 +86,6 @@ function App() {
       if (sort === 'created-new') {
         return b.date.localeCompare(a.date);
       }
-      if (sort === 'created-old') {
-        return a.date.localeCompare(b.date);
-      }
       return 0;
     });
   }

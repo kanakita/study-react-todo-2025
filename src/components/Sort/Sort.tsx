@@ -6,11 +6,10 @@ interface SortProps {
 
 export default function Sort({ onSortChange }: SortProps) {
   const items = [
-    { value: 'default', label: '登録順' }, // デフォルト
+    { value: 'default', label: '登録順（古→新）' }, // デフォルト
+    { value: 'created-new', label: '登録順（新→古）' },
     { value: 'priority-high', label: '優先度（高→低）' },
     { value: 'priority-low', label: '優先度（低→高）' },
-    { value: 'created-new', label: '作成日（新→古）' },
-    { value: 'created-old', label: '作成日（古→新）' },
   ];
 
   const [selected, setSelected] = useState('default');
