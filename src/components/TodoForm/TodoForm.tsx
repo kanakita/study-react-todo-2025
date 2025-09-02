@@ -11,12 +11,15 @@ export default function TodoForm({ onSubmit }: SubmitProps) {
   function handleOnSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const title = formData.get('title') as string;
+
+    const title = formData.get('title');
     const priority = formData.get('priority') as string;
 
-    if (!title) {
-      return;
-    }
+    if (!title) return;
+
+    // as string を使わないでtitleの型を判別する
+    // 型ガード。stringでなければここで処理が終了する
+    if (typeof title !== 'string') return;
 
     const todo = {
       completed: false,
