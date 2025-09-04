@@ -2,24 +2,33 @@ import { useState } from 'react';
 import Edit from './assets/edit.svg?react';
 import Trash from './assets/trash.svg?react';
 
-export interface TodoListProps {
+export interface TodoListProps extends TodoItemActionProps {
   items: TodoItemProps[];
-  onClickDelete: (id: string) => void;
-  onClickChange: (id: string, isCompleted: boolean) => void;
 }
 
 const PriorityMap = {
   1: '高',
   2: '中',
   3: '低',
-};
+} as const; // 定数として扱うという意味
 
-export type PriorityItem = keyof typeof PriorityMap;
+// Object.entriesでPriorityMapを[key, value]にして、mapで{ value, label }形式の配列に変換
+// 優先度のselectボックスに使用する
+export const priorityItems = Object.entries(PriorityMap).map(([value, label]: [string, string]) => {
+  return {
+    value: Number(value),
+    label: label,
+  };
+});
+
+// typeofは値から型を取得 -> keyofはオブジェクトからキーを取得
+// 1 | 2 | 3 になる
+export type PriorityType = keyof typeof PriorityMap;
 
 export interface TodoItemProps {
   completed: boolean;
   title: string;
-  priority: PriorityItem;
+  priority: PriorityType;
   id: string;
   date: string;
 }
@@ -72,7 +81,7 @@ interface TodoItemActionProps {
   onClickChange: (id: string, isCompleted: boolean) => void;
 }
 
-type TodoItemAction = TodoItemActionProps & Omit<TodoItemProps, 'date'>;
+interface TodoItemAction extends TodoItemActionProps, Omit<TodoItemProps, 'date'> {}
 
 export function TodoItem({
   completed,

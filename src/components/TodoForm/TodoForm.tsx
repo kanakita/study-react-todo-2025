@@ -1,4 +1,4 @@
-import { PriorityItem, TodoItemProps } from '@/components/TodoList/TodoList';
+import { PriorityType, priorityItems, TodoItemProps } from '@/components/TodoList/TodoList';
 import { ChangeEvent, useState } from 'react';
 
 export interface SubmitProps {
@@ -13,9 +13,9 @@ export default function TodoForm({ onSubmit }: SubmitProps) {
     const formData = new FormData(event.currentTarget);
 
     const title = formData.get('title');
-    const priority = formData.get('priority') as string;
+    const priority = formData.get('priority');
 
-    if (!title) return;
+    if (!title || !priority) return;
 
     // as string を使わないでtitleの型を判別する
     // 型ガード。stringでなければここで処理が終了する
@@ -24,7 +24,7 @@ export default function TodoForm({ onSubmit }: SubmitProps) {
     const todo = {
       completed: false,
       title: title,
-      priority: Number(priority) as PriorityItem,
+      priority: Number(priority) as PriorityType,
     };
     onSubmit(todo);
 
@@ -68,9 +68,13 @@ export default function TodoForm({ onSubmit }: SubmitProps) {
           }}
           name="priority"
         >
-          <option value="1">高</option>
-          <option value="2">中</option>
-          <option value="3">低</option>
+          {priorityItems.map(({ value, label }) => {
+            return (
+              <option value={value} key={value}>
+                {label}
+              </option>
+            );
+          })}
         </select>
       </div>
       <button
