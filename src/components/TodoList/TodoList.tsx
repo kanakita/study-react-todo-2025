@@ -161,7 +161,7 @@ export function TodoItem({
               handleChange();
             }}
           />
-          <label htmlFor="checkbox-table-search-1" className="sr-only">
+          <label htmlFor={id} className="sr-only">
             checkbox
           </label>
         </div>
