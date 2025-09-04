@@ -16,7 +16,7 @@ function App() {
   const [currentSort, setCurrentSort] = useState('default');
   // console.log(filteredTodos);
 
-  // todosが変更されるたびに実行される
+  // todos, currentFilter, currentSort が変更されるたびに実行される
   useEffect(() => {
     // localStorageに保存
     localStorage.setItem('todos', JSON.stringify(todos));
@@ -30,7 +30,6 @@ function App() {
       id: crypto.randomUUID(),
       date: new Date().toISOString(),
     };
-    console.log(new Date().toISOString());
 
     setTodos([...todos, newTodo]);
   }
@@ -106,6 +105,20 @@ function App() {
     setFilteredTodos(sorted);
   }
 
+  function editTodo(id: string, newEditText: string) {
+    const newTodos = todos.map((todo) => {
+      if (id === todo.id) {
+        return {
+          ...todo,
+          title: newEditText,
+        };
+      }
+      return todo;
+    });
+
+    setTodos(newTodos);
+  }
+
   return (
     <>
       <div className="container mx-auto">
@@ -116,7 +129,12 @@ function App() {
           <Sort onSortChange={sortTodos} />
         </div>
 
-        <TodoList items={filteredTodos} onClickDelete={deleteTodo} onClickChange={changeStatus} />
+        <TodoList
+          items={filteredTodos}
+          onClickDelete={deleteTodo}
+          onClickChange={changeStatus}
+          onClickEdit={editTodo}
+        />
       </div>
     </>
   );

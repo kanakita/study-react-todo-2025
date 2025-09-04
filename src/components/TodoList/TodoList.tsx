@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import Edit from './assets/edit.svg?react';
 import Trash from './assets/trash.svg?react';
 
@@ -33,7 +33,12 @@ export interface TodoItemProps {
   date: string;
 }
 
-export default function TodoList({ items = [], onClickDelete, onClickChange }: TodoListProps) {
+export default function TodoList({
+  items = [],
+  onClickDelete,
+  onClickChange,
+  onClickEdit,
+}: TodoListProps) {
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
@@ -67,6 +72,7 @@ export default function TodoList({ items = [], onClickDelete, onClickChange }: T
                   key={id}
                   onClickDelete={onClickDelete}
                   onClickChange={onClickChange}
+                  onClickEdit={onClickEdit}
                 />
               ))
             : null}
@@ -79,6 +85,7 @@ export default function TodoList({ items = [], onClickDelete, onClickChange }: T
 interface TodoItemActionProps {
   onClickDelete: (id: string) => void;
   onClickChange: (id: string, isCompleted: boolean) => void;
+  onClickEdit: (id: string, editText: string) => void;
 }
 
 interface TodoItemAction extends TodoItemActionProps, Omit<TodoItemProps, 'date'> {}
@@ -90,8 +97,11 @@ export function TodoItem({
   priority,
   onClickDelete,
   onClickChange,
+  onClickEdit,
 }: TodoItemAction) {
   const [isCompleted, setIsCompleted] = useState(completed);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingText, setEditingText] = useState(title);
 
   function handleDelete() {
     onClickDelete(id);
@@ -106,6 +116,19 @@ export function TodoItem({
 
     // 新しい値を渡す
     onClickChange(id, newValue);
+  }
+
+  // 編集
+  function handleEdit() {
+    const newEditStatus = !isEditing;
+    const newEditText = editingText;
+    // 編集状態をsetする
+    setIsEditing(newEditStatus);
+
+    // 入力テキストをsetする
+    setEditingText(newEditText);
+
+    onClickEdit(id, newEditText);
   }
 
   return (
@@ -126,15 +149,27 @@ export function TodoItem({
           </label>
         </div>
       </td>
-      <th
-        scope="row"
-        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-      >
-        {title}
+      <th scope="row">
+        {!isEditing ? (
+          <span className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            {editingText}
+          </span>
+        ) : (
+          <input
+            className="px-6 py-4 bg-gray-100 font-medium text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+            type="text"
+            value={editingText}
+            onChange={(event: ChangeEvent<HTMLInputElement>) => setEditingText(event.target.value)}
+          />
+        )}
       </th>
       <td className="px-6 py-4">{PriorityMap[priority]}</td>
       <td className="px-6 py-4">
-        <button className="font-medium text-blue-600 cursor-pointer" type="button">
+        <button
+          className="font-medium text-blue-600 cursor-pointer"
+          type="button"
+          onClick={handleEdit}
+        >
           <Edit width={18} height={18} />
         </button>
       </td>
