@@ -1,5 +1,5 @@
 import './App.css';
-import TodoList, { TodoItemProps } from '@/components/TodoList/TodoList';
+import TodoList, { PriorityType, TodoItemProps } from '@/components/TodoList/TodoList';
 import TodoForm from '@/components/TodoForm/TodoForm';
 import Header from '@/components/Header/Header';
 import { useEffect, useState } from 'react';
@@ -105,12 +105,13 @@ function App() {
     setFilteredTodos(sorted);
   }
 
-  function editTodo(id: string, newEditText: string) {
+  function editTodo(id: string, newEditText: string, newEditingPriority: PriorityType) {
     const newTodos = todos.map((todo) => {
       if (id === todo.id) {
         return {
           ...todo,
           title: newEditText,
+          priority: newEditingPriority,
         };
       }
       return todo;

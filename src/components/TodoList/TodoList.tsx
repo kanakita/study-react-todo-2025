@@ -85,7 +85,7 @@ export default function TodoList({
 interface TodoItemActionProps {
   onClickDelete: (id: string) => void;
   onClickChange: (id: string, isCompleted: boolean) => void;
-  onClickEdit: (id: string, editText: string) => void;
+  onClickEdit: (id: string, editText: string, editPriority: PriorityType) => void;
 }
 
 interface TodoItemAction extends TodoItemActionProps, Omit<TodoItemProps, 'date'> {}
@@ -102,6 +102,7 @@ export function TodoItem({
   const [isCompleted, setIsCompleted] = useState(completed);
   const [isEditing, setIsEditing] = useState(false);
   const [editingText, setEditingText] = useState(title);
+  const [editingPriority, setEditingPriority] = useState(priority);
 
   function handleDelete() {
     onClickDelete(id);
@@ -137,8 +138,9 @@ export function TodoItem({
     setIsEditing(false);
 
     setEditingText(editingText);
+    setEditingPriority(editingPriority);
 
-    onClickEdit(id, editingText);
+    onClickEdit(id, editingText, editingPriority);
   }
 
   // inputのキーボード入力時の処理
@@ -181,7 +183,28 @@ export function TodoItem({
           />
         )}
       </th>
-      <td className="px-6 py-4">{PriorityMap[priority]}</td>
+      <td className="px-6 py-4">
+        {!isEditing ? (
+          PriorityMap[priority]
+        ) : (
+          <select
+            id="editSelect"
+            value={editingPriority}
+            onChange={(event: ChangeEvent<HTMLSelectElement>) =>
+              setEditingPriority(Number(event.target.value) as PriorityType)
+            }
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+          >
+            {priorityItems.map(({ value, label }) => {
+              return (
+                <option value={value} key={value}>
+                  {label}
+                </option>
+              );
+            })}
+          </select>
+        )}
+      </td>
       <td className="px-6 py-4">
         <button
           className="font-medium text-blue-600 cursor-pointer"
