@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import Edit from './assets/edit.svg?react';
 import Trash from './assets/trash.svg?react';
 
@@ -131,6 +131,20 @@ export function TodoItem({
     onClickEdit(id, newEditText);
   }
 
+  function handleSubmit() {
+    setIsEditing(false);
+
+    setEditingText(editingText);
+
+    onClickEdit(id, editingText);
+  }
+
+  function handleInputKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key !== 'Enter') return; // エンターキー以外は何もしない
+    event.preventDefault();
+    handleSubmit();
+  }
+
   return (
     <tr className="bg-white border-b border-gray-200 hover:bg-gray-50">
       <td className="w-4 p-4">
@@ -160,6 +174,7 @@ export function TodoItem({
             type="text"
             value={editingText}
             onChange={(event: ChangeEvent<HTMLInputElement>) => setEditingText(event.target.value)}
+            onKeyDown={handleInputKeyDown}
           />
         )}
       </th>
