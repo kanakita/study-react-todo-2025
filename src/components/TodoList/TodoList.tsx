@@ -118,20 +118,22 @@ export function TodoItem({
     onClickChange(id, newValue);
   }
 
-  // 編集
+  // 編集ボタンを押した時の処理
   function handleEdit() {
     const newEditStatus = !isEditing;
-    const newEditText = editingText;
-    // 編集状態をsetする
-    setIsEditing(newEditStatus);
 
-    // 入力テキストをsetする
-    setEditingText(newEditText);
-
-    onClickEdit(id, newEditText);
+    // 編集中ならsubmitする
+    if (isEditing) {
+      handleSubmit();
+    } else {
+      // 編集中でなければ編集状態を更新する
+      setIsEditing(newEditStatus);
+    }
   }
 
+  // 変更を送信する処理
   function handleSubmit() {
+    // 送信するから編集状態はfalse
     setIsEditing(false);
 
     setEditingText(editingText);
@@ -139,6 +141,7 @@ export function TodoItem({
     onClickEdit(id, editingText);
   }
 
+  // inputのキーボード入力時の処理
   function handleInputKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     if (event.key !== 'Enter') return; // エンターキー以外は何もしない
     event.preventDefault();
