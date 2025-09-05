@@ -24,7 +24,7 @@ function App() {
     applyFilterAndSort();
   }, [todos, currentFilter, currentSort]);
 
-  function addTodo(todo: Omit<TodoItemProps, 'id' | 'date'>) {
+  const addTodo = (todo: Omit<TodoItemProps, 'id' | 'date'>) => {
     const newTodo = {
       ...todo,
       id: crypto.randomUUID(),
@@ -32,14 +32,14 @@ function App() {
     };
 
     setTodos([...todos, newTodo]);
-  }
+  };
 
-  function deleteTodo(id: string) {
+  const deleteTodo = (id: string) => {
     const newTodo = todos.filter((todo) => todo.id !== id);
     setTodos(newTodo);
-  }
+  };
 
-  function changeStatus(id: string, isCompleted: boolean) {
+  const changeStatus = (id: string, isCompleted: boolean) => {
     const newTodos = todos.map((todo) => {
       if (id === todo.id) {
         return {
@@ -51,10 +51,10 @@ function App() {
     });
 
     setTodos(newTodos);
-  }
+  };
 
   // todoをフィルター条件でフィルタリングして値を返す
-  function getFilteredTodos(filter: string) {
+  const getFilteredTodos = (filter: string) => {
     return todos.filter((todo) => {
       if (filter === 'all') {
         return true;
@@ -67,14 +67,14 @@ function App() {
       }
       return false;
     });
-  }
+  };
 
-  function filterTodos(filter: string) {
+  const filterTodos = (filter: string) => {
     setCurrentFilter(filter); // 状態だけ更新する
-  }
+  };
 
   // 渡された配列をソート条件でソートして値を返す
-  function getSortedTodos(todoArray: TodoItemProps[], sort: string) {
+  const getSortedTodos = (todoArray: TodoItemProps[], sort: string) => {
     return [...todoArray].sort((a, b) => {
       if (sort === 'priority-high') {
         return a.priority - b.priority; // 1,2,3順 = 高→低
@@ -87,14 +87,14 @@ function App() {
       }
       return 0;
     });
-  }
+  };
 
-  function sortTodos(sort: string) {
+  const sortTodos = (sort: string) => {
     setCurrentSort(sort); // 状態だけ更新する
-  }
+  };
 
   // 現在のフィルター・ソート設定でtodosを処理し、filteredTodosを更新する
-  function applyFilterAndSort() {
+  const applyFilterAndSort = () => {
     // フィルタリングを実行（フィルタリングされた値が返ってくる）
     const filtered = getFilteredTodos(currentFilter);
 
@@ -103,9 +103,9 @@ function App() {
 
     // 最終結果をfilteredTodosに設定
     setFilteredTodos(sorted);
-  }
+  };
 
-  function editTodo(id: string, newEditText: string, newEditingPriority: PriorityType) {
+  const editTodo = (id: string, newEditText: string, newEditingPriority: PriorityType) => {
     const newTodos = todos.map((todo) => {
       if (id === todo.id) {
         return {
@@ -118,7 +118,7 @@ function App() {
     });
 
     setTodos(newTodos);
-  }
+  };
 
   return (
     <>
