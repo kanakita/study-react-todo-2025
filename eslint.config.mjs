@@ -4,14 +4,26 @@ import tseslint from 'typescript-eslint';
 import pluginReact from 'eslint-plugin-react';
 import pluginReactHooks from 'eslint-plugin-react-hooks';
 import pluginJsxA11y from 'eslint-plugin-jsx-a11y';
-import prettier from "eslint-config-prettier";
+import prettier from 'eslint-config-prettier';
 
 export default tseslint.config(
+  // 無視するファイル
   {
     ignores: ['dist/**/*', 'build/**/*', 'node_modules/**/*', '*.config.js', '*.config.mjs'],
   },
+  // 基本設定の適用
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  pluginReact.configs.flat.recommended,
+  prettier,
+
+  // メイン設定
   {
     files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    plugins: {
+      'react-hooks': pluginReactHooks,
+      'jsx-a11y': pluginJsxA11y,
+    },
     languageOptions: {
       globals: {
         ...globals.browser,
@@ -25,28 +37,16 @@ export default tseslint.config(
         },
       },
     },
-  },
-  js.configs.recommended,
-  ...tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
-  prettier,
-  {
-    plugins: {
-      'react-hooks': pluginReactHooks,
-      'jsx-a11y': pluginJsxA11y,
-    },
-    rules: {
-      ...pluginReactHooks.configs.recommended.rules,
-      ...pluginJsxA11y.configs.recommended.rules,
-    },
-  },
-  {
     settings: {
       react: {
         version: 'detect',
       },
     },
     rules: {
+      // プラグインの推奨ルールを適用
+      ...pluginReactHooks.configs.recommended.rules,
+      ...pluginJsxA11y.configs.recommended.rules,
+
       // React関連
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off', // TypeScriptを使用するため無効
