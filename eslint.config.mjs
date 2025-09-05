@@ -1,3 +1,6 @@
+// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
+import storybook from 'eslint-plugin-storybook';
+
 import js from '@eslint/js';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
@@ -85,4 +88,12 @@ export default tseslint.config(
       'no-console': 'off',
     },
   },
+
+  {
+    files: ['**/*.stories.@(js|jsx|ts|tsx)'],
+    rules: {
+      'storybook/no-renderer-packages': 'off'
+    }
+  },
+  storybook.configs['flat/recommended'],
 );
