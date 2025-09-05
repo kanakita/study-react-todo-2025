@@ -105,13 +105,13 @@ function App() {
     setFilteredTodos(sorted);
   };
 
-  const editTodo = (id: string, newEditText: string, newEditingPriority: PriorityType) => {
+  const editTodo = (id: string, newText: string, newPriority: PriorityType) => {
     const newTodos = todos.map((todo) => {
       if (id === todo.id) {
         return {
           ...todo,
-          title: newEditText,
-          priority: newEditingPriority,
+          title: newText,
+          priority: newPriority,
         };
       }
       return todo;
