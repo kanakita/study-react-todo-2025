@@ -19,11 +19,6 @@ const meta = {
     priority: {
       control: { type: 'select' },
       options: [1, 2, 3],
-      mapping: {
-        1: '高',
-        2: '中',
-        3: '低',
-      },
       description: '優先度（1: 高, 2: 中, 3: 低）',
     },
     completed: {
@@ -41,32 +36,30 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-            <tr>
-              <th scope="col" className="p-4 w-14">
-                完了
-              </th>
-              <th scope="col" className="px-6 py-3 w-3/4">
-                タイトル
-              </th>
-              <th scope="col" className="px-6 py-3 w-28">
-                優先度
-              </th>
-              <th scope="col" className="px-6 py-3">
-                編集
-              </th>
-              <th scope="col" className="px-6 py-3">
-                削除
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <Story />
-          </tbody>
-        </table>
-      </div>
+      <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+          <tr>
+            <th scope="col" className="p-4 w-14">
+              完了
+            </th>
+            <th scope="col" className="px-6 py-3 w-3/4">
+              タイトル
+            </th>
+            <th scope="col" className="px-6 py-3 w-28">
+              優先度
+            </th>
+            <th scope="col" className="px-6 py-3">
+              編集
+            </th>
+            <th scope="col" className="px-6 py-3">
+              削除
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <Story />
+        </tbody>
+      </table>
     ),
   ],
 } satisfies Meta<typeof TodoItem>;
@@ -92,43 +85,6 @@ export const Completed: Story = {
     title: 'プロジェクトの企画書を作成',
     priority: 1,
     completed: true,
-    onClickDelete: fn(),
-    onClickChange: fn(),
-    onClickEdit: fn(),
-  },
-};
-
-export const HighPriority: Story = {
-  args: {
-    id: '3',
-    title: '重要な会議の準備',
-    priority: 1,
-    completed: false,
-    onClickDelete: fn(),
-    onClickChange: fn(),
-    onClickEdit: fn(),
-  },
-};
-
-export const LowPriority: Story = {
-  args: {
-    id: '4',
-    title: '本を読む',
-    priority: 3,
-    completed: false,
-    onClickDelete: fn(),
-    onClickChange: fn(),
-    onClickEdit: fn(),
-  },
-};
-
-export const LongTitle: Story = {
-  args: {
-    id: '5',
-    title:
-      'とても長いタイトルのTodo項目で、テキストの折り返しやレイアウトの確認を行うためのサンプルです',
-    priority: 2,
-    completed: false,
     onClickDelete: fn(),
     onClickChange: fn(),
     onClickEdit: fn(),
