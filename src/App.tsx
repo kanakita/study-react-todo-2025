@@ -11,18 +11,14 @@ function App() {
   const initialTodoList: TodoItemProps[] = storageData ? JSON.parse(storageData) : [];
 
   const [todos, setTodos] = useState(initialTodoList);
-  const [filteredTodos, setFilteredTodos] = useState(todos);
   const [currentFilter, setCurrentFilter] = useState('all');
   const [currentSort, setCurrentSort] = useState('default');
-  // console.log(filteredTodos);
 
-  // todos, currentFilter, currentSort が変更されるたびに実行される
+  // todos が変更されるたびに実行される
   useEffect(() => {
     // localStorageに保存
     localStorage.setItem('todos', JSON.stringify(todos));
-
-    applyFilterAndSort();
-  }, [todos, currentFilter, currentSort]);
+  }, [todos]);
 
   const addTodo = (todo: Omit<TodoItemProps, 'id' | 'date'>) => {
     const newTodo = {
@@ -93,18 +89,6 @@ function App() {
     setCurrentSort(sort); // 状態だけ更新する
   };
 
-  // 現在のフィルター・ソート設定でtodosを処理し、filteredTodosを更新する
-  const applyFilterAndSort = () => {
-    // フィルタリングを実行（フィルタリングされた値が返ってくる）
-    const filtered = getFilteredTodos(currentFilter);
-
-    // フィルタリングされた値を元にソートを実行
-    const sorted = getSortedTodos(filtered, currentSort);
-
-    // 最終結果をfilteredTodosに設定
-    setFilteredTodos(sorted);
-  };
-
   const editTodo = (id: string, newText: string, newPriority: PriorityType) => {
     const newTodos = todos.map((todo) => {
       if (id === todo.id) {
@@ -120,6 +104,12 @@ function App() {
     setTodos(newTodos);
   };
 
+  // フィルタリングを実行（フィルタリングされた値が返ってくる）
+  const filtered = getFilteredTodos(currentFilter);
+
+  // フィルタリングされた値を元にソートを実行
+  const sorted = getSortedTodos(filtered, currentSort);
+
   return (
     <>
       <div className="container mx-auto">
@@ -131,7 +121,7 @@ function App() {
         </div>
 
         <TodoList
-          items={filteredTodos}
+          items={sorted}
           onClickDelete={deleteTodo}
           onClickChange={changeStatus}
           onClickEdit={editTodo}
