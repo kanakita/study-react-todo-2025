@@ -3,7 +3,7 @@ import Edit from './assets/edit.svg?react';
 import Trash from './assets/trash.svg?react';
 
 export interface TodoListProps extends TodoItemActionProps {
-  items: TodoItemProps[];
+  items: TodoItemData[];
 }
 
 const PriorityMap = {
@@ -25,7 +25,7 @@ export const priorityItems = Object.entries(PriorityMap).map(([value, label]: [s
 // 1 | 2 | 3 になる
 export type PriorityType = keyof typeof PriorityMap;
 
-export interface TodoItemProps {
+export interface TodoItemData {
   completed: boolean;
   title: string;
   priority: PriorityType;
@@ -88,7 +88,7 @@ interface TodoItemActionProps {
   onClickEdit: (id: string, editText: string, editPriority: PriorityType) => void;
 }
 
-interface TodoItemAction extends TodoItemActionProps, Omit<TodoItemProps, 'date'> {}
+interface TodoItemProps extends TodoItemActionProps, Omit<TodoItemData, 'date'> {}
 
 export function TodoItem({
   completed,
@@ -98,7 +98,7 @@ export function TodoItem({
   onClickDelete,
   onClickChange,
   onClickEdit,
-}: TodoItemAction) {
+}: TodoItemProps) {
   const [isCompleted, setIsCompleted] = useState(completed);
   const [isEditing, setIsEditing] = useState(false);
   const [editingText, setEditingText] = useState(title);

@@ -1,5 +1,5 @@
 import './App.css';
-import TodoList, { PriorityType, TodoItemProps } from '@/components/TodoList/TodoList';
+import TodoList, { PriorityType, TodoItemData } from '@/components/TodoList/TodoList';
 import TodoForm from '@/components/TodoForm/TodoForm';
 import Header from '@/components/Header/Header';
 import { useEffect, useState } from 'react';
@@ -8,7 +8,7 @@ import Sort from '@/components/Sort/Sort';
 
 function App() {
   const storageData = localStorage.getItem('todos');
-  const initialTodoList: TodoItemProps[] = storageData ? JSON.parse(storageData) : [];
+  const initialTodoList: TodoItemData[] = storageData ? JSON.parse(storageData) : [];
 
   const [todos, setTodos] = useState(initialTodoList);
   const [currentFilter, setCurrentFilter] = useState('all');
@@ -20,7 +20,7 @@ function App() {
     localStorage.setItem('todos', JSON.stringify(todos));
   }, [todos]);
 
-  const addTodo = (todo: Omit<TodoItemProps, 'id' | 'date'>) => {
+  const addTodo = (todo: Omit<TodoItemData, 'id' | 'date'>) => {
     const newTodo = {
       ...todo,
       id: crypto.randomUUID(),
@@ -31,8 +31,8 @@ function App() {
   };
 
   const deleteTodo = (id: string) => {
-    const newTodo = todos.filter((todo) => todo.id !== id);
-    setTodos(newTodo);
+    const newTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(newTodos);
   };
 
   const changeStatus = (id: string, isCompleted: boolean) => {
@@ -70,7 +70,7 @@ function App() {
   };
 
   // 渡された配列をソート条件でソートして値を返す
-  const getSortedTodos = (todoArray: TodoItemProps[], sort: string) => {
+  const getSortedTodos = (todoArray: TodoItemData[], sort: string) => {
     return [...todoArray].sort((a, b) => {
       if (sort === 'priority-high') {
         return a.priority - b.priority; // 1,2,3順 = 高→低
