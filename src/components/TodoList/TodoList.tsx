@@ -121,14 +121,12 @@ export function TodoItem({
 
   // 編集ボタンを押した時の処理
   function handleEdit() {
-    const newEditStatus = !isEditing;
-
     // 編集中ならsubmitする
     if (isEditing) {
       handleSubmit();
     } else {
       // 編集中でなければ編集状態を更新する
-      setIsEditing(newEditStatus);
+      setIsEditing(!isEditing);
     }
   }
 
